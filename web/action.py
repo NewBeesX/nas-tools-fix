@@ -76,6 +76,7 @@ class WebAction:
             "del_site": self.__del_site,
             "get_site_favicon": self.__get_site_favicon,
             "restart": self.__restart,
+            "shutdown": self.__shutdown,
             "update_system": self.update_system,
             "reset_db_version": self.__reset_db_version,
             "logout": self.__logout,
@@ -1200,6 +1201,14 @@ class WebAction:
         """
         # 退出主进程
         self.restart_server()
+        return {"code": 0}
+
+    def __shutdown(self):
+        """
+        重启
+        """
+        # 关闭服务
+        self.stop_service()
         return {"code": 0}
 
     def update_system(self):

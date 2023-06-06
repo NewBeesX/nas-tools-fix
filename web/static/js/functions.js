@@ -331,6 +331,17 @@ function restart() {
   });
 }
 
+//关闭
+function shutdown() {
+  show_confirm_modal("立即关闭系统？", function () {
+    hide_confirm_modal();
+    ajax_post("shutdown", {}, function (ret) {
+    }, true, false);
+    show_wait_modal(true);
+    setTimeout("check_system_online()", 5000);
+  });
+}
+
 //更新
 function update(version) {
   let title;
