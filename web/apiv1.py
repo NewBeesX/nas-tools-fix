@@ -1,3 +1,5 @@
+import json
+
 from flask import Blueprint, request
 from flask_restx import Api, reqparse, Resource
 
@@ -2204,6 +2206,36 @@ class MessageClientTest(ClientResource):
         测试通知消息服务配置正确性
         """
         return WebAction().api_action(cmd='test_message_client', data=self.parser.parse_args())
+
+
+@message.route('/client/notify')
+class MessageClientTest(ApiResource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title', help='消息标题', location='args', required=True)
+    parser.add_argument('content', help='正文说明', location='args')
+    parser.add_argument('image', help='图片链接', location='args')
+    parser.add_argument('url', help='详情链接', location='args')
+    parser.add_argument('uid', help='用户id', location='args')
+    parser.add_argument('client', help='[4]', location='args')
+
+    @message.doc(parser=parser)
+    def get(self):
+        """
+        测试通知消息服务配置正确性
+        """
+        args = self.parser.parse_args()
+        client = args['client']
+        if not client:
+            client = ['4']
+        content = {
+            "title": args['title'],
+            "text": args['content'],
+            "image": args['image'],
+            "url": args['url'],
+            "uid": args['uid'],
+            "message_clients": client,
+        }
+        return WebAction().api_action(cmd='send_custom_message', data=content)
 
 
 @torrentremover.route('/task/info')

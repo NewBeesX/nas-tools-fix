@@ -613,7 +613,7 @@ class Message(object):
                     image=image
                 )
 
-    def send_custom_message(self, clients, title, text="", image=""):
+    def send_custom_message(self, clients, title, text="", image="", detail="", uid=""):
         """
         发送自定义消息
         """
@@ -630,7 +630,9 @@ class Message(object):
                     client=client,
                     title=title,
                     text=text,
-                    image=image
+                    image=image,
+                    url=detail,
+                    user_id=uid
                 )
 
     def get_message_client_info(self, cid=None):

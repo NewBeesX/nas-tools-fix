@@ -4491,10 +4491,12 @@ class WebAction:
         title = data.get("title")
         text = data.get("text") or ""
         image = data.get("image") or ""
+        url = data.get("url") or ""
+        uid = data.get("uid") or ""
         message_clients = data.get("message_clients")
         if not message_clients:
             return {"code": 1, "msg": "未选择消息服务"}
-        Message().send_custom_message(clients=message_clients, title=title, text=text, image=image)
+        Message().send_custom_message(clients=message_clients, title=title, text=text, image=image, detail=url, uid=uid)
         return {"code": 0}
 
     @staticmethod
