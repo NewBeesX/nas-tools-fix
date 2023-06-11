@@ -19,7 +19,7 @@ from app.utils.types import SearchType, IndexerType, ProgressKey
 from config import Config
 
 
-class JackettIndexer(_IIndexClient):
+class Jackett(_IIndexClient):
     # 索引器ID
     client_id = "jackett"
     # 索引器类型
