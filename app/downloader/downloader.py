@@ -172,6 +172,13 @@ class Downloader:
                 ExceptionUtils.exception_traceback(e)
         return None
 
+    def __ensure_default_downloader_id_if_none(self, did):
+        """
+        如果没有设置默认下载器id，则使用当前did作为下载器id
+        """
+        if not self.default_downloader_id:
+            SystemConfig().set(SystemConfigKey.DefaultDownloader, did)
+
     @property
     def default_downloader_id(self):
         """
@@ -412,7 +419,7 @@ class Downloader:
             # 下载目录设置
             if not download_dir:
                 download_info = self.__get_download_dir_info(media_info, downloader_conf.get("download_dir"))
-                download_dir = download_info.get('path')
+                download_dir = download_info.get('path') or download_info.get('category')
                 # 从下载目录中获取分类标签
                 if not category:
                     category = download_info.get('category')
@@ -1411,6 +1418,7 @@ class Downloader:
             config=config,
             download_dir=download_dir
         )
+        self.__ensure_default_downloader_id_if_none(did)
         self.init_config()
         return ret
 

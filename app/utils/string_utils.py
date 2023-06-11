@@ -231,6 +231,19 @@ class StringUtils:
         return addr.scheme, addr.netloc
 
     @staticmethod
+    def get_url_path(url):
+        """
+        获取URL的协议和域名部分
+        """
+        if not url:
+            return ""
+        if not url.startswith("http") and not url.startswith('https'):
+            return ""
+        paths = parse.urlparse(url).path.split('/')
+        v_path = list(filter(lambda s: s and len(s) > 0, paths))
+        return v_path[-1]
+
+    @staticmethod
     def get_url_domain(url):
         """
         获取URL的域名部分，不含WWW和HTTP

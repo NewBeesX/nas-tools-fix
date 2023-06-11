@@ -136,7 +136,7 @@ class Sites:
         if siteid:
             return self._siteByIds.get(int(siteid)) or {}
         if siteurl:
-            return self._siteByUrls.get(StringUtils.get_url_domain(siteurl)) or {}
+            return self.match_jackett_site(siteurl) or self._siteByUrls.get(StringUtils.get_url_domain(siteurl)) or {}
 
         ret_sites = []
         for site in self._siteByIds.values():
@@ -363,3 +363,14 @@ class Sites:
                                                   ua=ua)
         self.init_config()
         return ret
+
+    def match_jackett_site(self, url=None):
+        if 'jackett_apikey' in url:
+            host = Config().get_config('jackett').get('host')
+            if host in url:
+                site = StringUtils.get_url_path(url)
+                if site:
+                    for domain in self._siteByUrls:
+                        if site in domain:
+                            return self._siteByUrls.get(domain)
+        return None
